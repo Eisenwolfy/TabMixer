@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -37,13 +35,3 @@ acc = accuracy_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
 
 print(f"Accuracy: {acc * 100:.2f}%\n")
-print(classification_report(y_test, y_pred, target_names=["Weak Progression", "Strong Progression"]))
-
-# Plotting heatmap
-plt.figure(figsize=(6,5))
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
-            xticklabels=["Weak", "Strong"], yticklabels=["Weak", "Strong"])
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.title("Confusion Matrix — Diabetes Dataset")
-plt.show()
