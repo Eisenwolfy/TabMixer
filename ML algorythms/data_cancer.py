@@ -4,6 +4,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 
 # Dataset
@@ -34,3 +35,11 @@ acc = accuracy_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
 
 print(f"Accuracy: {acc * 100:.2f}%\n")
+
+
+#Random Forest
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+
+rf_preds = rf.predict(X_test)
+print(f"Random Forest Accuracy: {accuracy_score(y_test, rf_preds):.4f}")
