@@ -6,9 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# =========================================================================
 # Dataset
-# =========================================================================
 data = fetch_california_housing()
 X = data.data
 y = (data.target > np.median(data.target)).astype(int)   # 0 = cheap, 1 = expensive
@@ -23,9 +21,8 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# =========================================================================
+
 # KNN
-# =========================================================================
 knn = KNeighborsClassifier(n_neighbors=7)
 knn.fit(X_train, y_train)
 knn_preds = knn.predict(X_test)
@@ -33,9 +30,8 @@ knn_preds = knn.predict(X_test)
 knn_acc = accuracy_score(y_test, knn_preds)
 conf_matrix = confusion_matrix(y_test, knn_preds)
 
-# =========================================================================
+
 # Random Forest
-# =========================================================================
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
 rf_preds = rf.predict(X_test)
