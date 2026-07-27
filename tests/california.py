@@ -10,8 +10,8 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-from mm import TabMixer
-from standartMLP00 import MLP
+from TabMixer import TabMixer
+from numpy_MLP import MLP
 
 
 # Data Preparation & Split
