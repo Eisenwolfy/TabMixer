@@ -191,37 +191,37 @@ The Adult Income scripts download data via `fetch_openml` on first run (requires
 
 | Model | Accuracy |
 |---|---|
-| KNN | XX.XX% |
-| Random Forest | XX.XX% |
-| XGBoost | XX.XX% |
-| CatBoost | XX.XX% |
-| NumPy MLP (from scratch) | XX.XX% |
-| PyTorch MLP | XX.XX% |
-| **TabMixer** | XX.XX% |
+| KNN | 97.37% |
+| Random Forest | 95.61% |
+| XGBoost | 93.86% |
+| CatBoost | 93.86% |
+| NumPy MLP (from scratch) | 97.37% |
+| PyTorch MLP | 98.25% |
+| **TabMixer** | 96.49% |
 
 ### California Housing (binarized)
 
 | Model | Accuracy |
 |---|---|
-| KNN | XX.XX% |
-| Random Forest | XX.XX% |
-| XGBoost | XX.XX% |
-| CatBoost | XX.XX% |
-| NumPy MLP (from scratch) | XX.XX% |
-| PyTorch MLP | XX.XX% |
-| **TabMixer** | XX.XX% |
+| KNN | 83.55% |
+| Random Forest | 89.53% |
+| XGBoost | 91.23% |
+| CatBoost | 89.80% |
+| NumPy MLP (from scratch) | 88.08% |
+| PyTorch MLP | 88.35% |
+| **TabMixer** | 88.76% |
 
 ### Adult Income
 
 | Model | Accuracy |
 |---|---|
-| KNN | XX.XX% |
-| Random Forest | XX.XX% |
-| XGBoost | XX.XX% |
-| CatBoost | XX.XX% |
-| NumPy MLP (from scratch) | XX.XX% |
-| PyTorch MLP | XX.XX% |
-| **TabMixer** | XX.XX% |
+| KNN | 83.83% |
+| Random Forest | 86.02% |
+| XGBoost | 87.44% |
+| CatBoost | 86.72% |
+| NumPy MLP (from scratch) | 84.87% |
+| PyTorch MLP | 85.48% |
+| **TabMixer** | 86.49% |
 
 ---
 
