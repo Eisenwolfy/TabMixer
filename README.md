@@ -77,7 +77,7 @@ Mixes information *across features* (the `F` axis) with a small bottleneck MLP, 
 
 ### Channel Mixer
 
-Mixes information *within* each feature's embedding (the `D` axis), independently per feature — the standard MLP-Mixer channel-mixing step.
+Mixes information *within* each feature's embedding (the `D` axis), independently per feature - the standard MLP-Mixer channel-mixing step.
 
 ### Feature Gate
 
