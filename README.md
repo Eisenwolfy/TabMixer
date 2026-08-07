@@ -110,7 +110,7 @@ During training, the gated update is also randomly dropped for an entire sample 
 .
 ├── models/
 │   ├── TabMixer.py          # TabMixer architecture (PyTorch)
-│   └── numpy_MLP.py         # MLP implemented from scratch in NumPy (forward + manual backprop, Adam, dropout)
+│   └── numpy_MLP.py         # MLP implemented from scratch in NumPy 
 │
 ├── ML algorythms/            # Classical ML baselines (KNN, Random Forest)
 │   ├── data_cancer.py
