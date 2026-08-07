@@ -8,21 +8,6 @@ The project isn't just the architecture: it's a full experimental pipeline that 
 
 ---
 
-## Table of Contents
-
-- [Motivation](#motivation)
-- [Architecture](#architecture)
-- [Key Components](#key-components)
-- [Repository Structure](#repository-structure)
-- [Datasets](#datasets)
-- [Getting Started](#getting-started)
-- [Results](#results)
-- [Baselines](#baselines)
-- [Roadmap](#roadmap)
-- [Tech Stack](#tech-stack)
-
----
-
 ## Motivation
 
 Tabular data remains one of the hardest domains for deep learning to win convincingly — gradient-boosted trees (XGBoost, CatBoost) still tend to outperform neural networks on most tabular benchmarks. Classical MLPs struggle to model feature interactions explicitly, while transformer-style self-attention over features is computationally heavier than the problem often warrants.
