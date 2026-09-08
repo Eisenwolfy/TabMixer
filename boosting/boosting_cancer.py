@@ -11,18 +11,14 @@ from catboost import CatBoostClassifier
 data = load_breast_cancer()
 X, y = data.data, data.target
 
-# Train / Test
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Train / Validation (for early stopping)
 X_train, X_val, y_train, y_val = train_test_split(
     X_train, y_train, test_size=0.15, random_state=42, stratify=y_train
 )
 
-# NOTE: no StandardScaler here on purpose - tree-based models are invariant
-# to monotonic feature scaling, scaling would be a no-op for them.
 
 # =========================================================================
 # XGBoost
