@@ -18,27 +18,15 @@ y = (data.target == ">50K").astype(int)
 num_cols = X.select_dtypes(include="number").columns
 cat_cols = X.select_dtypes(exclude="number").columns
 
-# Train / Test
 X_train_raw, X_test_raw, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Train / Validation
 X_train_raw, X_val_raw, y_train, y_val = train_test_split(
     X_train_raw, y_train, test_size=0.15, random_state=42, stratify=y_train
 )
 
 
-# -------------------------------------------------------------------------
-# Preprocessing: impute only, NO one-hot / ordinal encoding.
-#
-# Unlike the MLP/TabMixer tests, both XGBoost and CatBoost can consume
-# categorical columns natively and do it better than an arbitrary ordinal
-# code would - so we keep categories as categories and let each library
-# handle them the way it's designed to:
-#   - CatBoost: pass raw string columns + cat_features=[...]
-#   - XGBoost:  pass pandas 'category' dtype columns + enable_categorical=True
-# -------------------------------------------------------------------------
 num_imputer = SimpleImputer(strategy="median")
 cat_imputer = SimpleImputer(strategy="most_frequent")
 
