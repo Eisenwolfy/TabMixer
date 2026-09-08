@@ -24,8 +24,6 @@ X_train, X_val, y_train, y_val = train_test_split(
     X_train, y_train, test_size=0.15, random_state=42, stratify=y_train
 )
 
-# NOTE: no StandardScaler here on purpose - tree-based models are invariant
-# to monotonic feature scaling, scaling would be a no-op for them.
 
 # =========================================================================
 # XGBoost
@@ -43,11 +41,7 @@ xgb = XGBClassifier(
     random_state=42
 )
 
-xgb.fit(
-    X_train, y_train,
-    eval_set=[(X_val, y_val)],
-    verbose=False
-)
+xgb.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
 
 xgb_preds = xgb.predict(X_test)
 
