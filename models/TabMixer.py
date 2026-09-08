@@ -8,19 +8,16 @@ D - embedding size
 """
 
 class NumericalEmbedding(nn.Module):
-    """Periodic (sin/cos) embedding + positional embedding per feature."""
     def __init__(self, F, D):
         super().__init__()
         assert D % 2 == 0
-        # Reverted back to a safe random normal init scale so angles don't immediately collapse to 0
         self.freq = nn.Parameter(torch.randn(F, D // 2))
         self.phase = nn.Parameter(torch.zeros(F, D // 2))
         self.pos_embed = nn.Parameter(torch.randn(F, D) * 0.02)
 
     def forward(self, x):
-        # x: (B, F)
-        angle = x.unsqueeze(-1) * self.freq + self.phase # (B, F, D/2)
-        emb = torch.cat([torch.sin(angle), torch.cos(angle)], dim=-1)  # (B, F, D)
+        angle = x.unsqueeze(-1) * self.freq + self.phase
+        emb = torch.cat([torch.sin(angle), torch.cos(angle)], dim=-1)
         return emb + self.pos_embed
 
 
@@ -56,17 +53,15 @@ class FeatureGate(nn.Module):
     def __init__(self, F, D):
         super().__init__()
         self.local_proj = nn.Linear(D, D)
-        # Mixes across features (F) for each channel efficiently
         self.context_proj = nn.Linear(F, F)
         self.to_gate = nn.Linear(D, D)
         self.last_gate = None
 
     def forward(self, x):
-        # x shape: (B, F, D)
         local = self.local_proj(x)
         context = self.context_proj(x.transpose(1, 2)).transpose(1, 2)
 
-        gate = torch.sigmoid(self.to_gate(local + context))  # (B, F, D)
+        gate = torch.sigmoid(self.to_gate(local + context))
         self.last_gate = gate.detach()
         return gate
 
@@ -85,16 +80,12 @@ class MixerBlock(nn.Module):
         self.drop_prob = drop_prob
 
     def _highway(self, x_old, x_new, gate):
-        # Calculate the raw gated update
         update = gate * (x_new - x_old)
 
         if self.training and self.drop_prob > 0:
             B = x_old.shape[0]
             keep_prob = 1 - self.drop_prob
-            # Draw mask per sample
             keep_mask = (torch.rand(B, 1, 1, device=x_old.device) < keep_prob).float()
-
-            # Scale the actual residual update vector, leaving gate boundaries intact
             update = update * (keep_mask / keep_prob)
 
         return x_old + update
@@ -138,7 +129,6 @@ class TabMixer(nn.Module):
                 "block": i,
                 "gate1": block.gate1.last_gate,
                 "gate2": block.gate2.last_gate,
-                # Cleaned up old attention tracking keys
             })
         return out
 
