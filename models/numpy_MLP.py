@@ -12,22 +12,21 @@ class MLP:
         self.output_size = output_size
         self.epochs = epochs
         self.learning_rate = learning_rate
-        self.batch_size = batch_size # number of samples in one batch
-        self.dropout_rate = dropout_rate # part of neurons which we turn off randomly
-        self.patience = patience # number of epochs
-        self.losses = [] # loss through epochs
-        self.val_losses = [] # val through epochs
-        self.training = True # True = train, False = inference
+        self.batch_size = batch_size
+        self.dropout_rate = dropout_rate
+        self.patience = patience
+        self.losses = []
+        self.val_losses = []
+        self.training = True
 
         self.weights = []
         self.biases = []
 
-        # Adam optimizer
         self.m_W = []
         self.v_W = []
         self.m_b = []
         self.v_b = []
-        self.t = 0 # steps counter for bias correction in Adam
+        self.t = 0
 
         layer_sizes = [input_size] + hidden_sizes + [output_size]
 
@@ -47,29 +46,21 @@ class MLP:
     # -------------------------------------------------------------------------
 
     def softmax(self, Z):
-        # subtract max for numerical stability
         shifted = Z - np.max(Z, axis=0, keepdims=True)
         exp_Z = np.exp(shifted)
         return exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
 
 
     def tanh(self, Z):
-        # tanh(z) = (e^z - e^-z) / (e^z + e^-z)
-        # used for hidden layers
         return np.tanh(Z)
 
     def gradient_tanh(self, Z):
-        # derivative of tanh: d/dz tanh(z) = 1 - tanh(z)^2
-        # used in backprop
         return 1 - np.tanh(Z) ** 2
 
     def sigmoid(self, x):
-        # sigmoid(x) = 1 / (1 + e^-x)
-        # used in output layers to get binary classification
         return 1 / (1 + np.exp(-x))
 
     def conversion(self, x, num_classes):
-        # one-hot encoding: converting labels (integer) into matrices
         oh = np.zeros((num_classes, x.shape[0]))
         oh[x, np.arange(x.shape[0])] = 1
         return oh
@@ -89,14 +80,13 @@ class MLP:
     # -------------------------------------------------------------------------
 
     def forward(self, X):
-        self.Z_cache = [] # save for backwards
-        self.A_cache = [] # analogously
+        self.Z_cache = []
+        self.A_cache = []
         self.dropout_masks = []
 
         A = X
-        self.A_cache.append(A)  # activation of null layer
+        self.A_cache.append(A)
 
-        # hidden layers
         for i in range(len(self.weights) - 1):
             Z = self.weights[i] @ A + self.biases[i]
             A = self.tanh(Z)
@@ -105,7 +95,6 @@ class MLP:
             self.A_cache.append(A)
             self.dropout_masks.append(mask)
 
-        # output layer
         Z = self.weights[-1] @ A + self.biases[-1]
         A = self.softmax(Z)
         self.Z_cache.append(Z)
@@ -119,13 +108,13 @@ class MLP:
 
     def backward(self, X, y):
 
-        N = X.shape[1]  # number of samples in batch
+        N = X.shape[1]
         y_one_hot = self.conversion(y, self.output_size)
 
         gradients_W = []
         gradients_b = []
 
-        dZ = self.A_cache[-1] - y_one_hot  # shape: (output_size, N)
+        dZ = self.A_cache[-1] - y_one_hot
 
         for i in reversed(range(len(self.weights))):
             A_prev = self.A_cache[i]
@@ -208,7 +197,6 @@ class MLP:
                 X_batch = X_shuffled[:, start:end]
                 y_batch = y_shuffled[start:end]
 
-                # forward → loss → backward → update
                 output = self.forward(X_batch)
                 y_one_hot = self.conversion(y_batch, self.output_size)
                 loss = self.cross_entropy_loss(output, y_one_hot)
@@ -229,7 +217,6 @@ class MLP:
             if epoch % 50 == 0:
                 print(f"Epoch {epoch:4d} | Loss: {epoch_loss/num_batches:.4f} | Val Loss: {val_loss:.4f}")
 
-            # early stopping
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
                 patience_counter = 0
@@ -261,14 +248,14 @@ class MLP:
     def predict(self, X):
         self.training = False
         output = self.forward(X)
-        return np.argmax(output, axis=0)  # shape: (N,)
+        return np.argmax(output, axis=0)
 
     def predict_single(self, x_raw, scaler, class_names):
 
-        x_scaled = scaler.transform(x_raw.reshape(1, -1)).T  # → (30, 1)
+        x_scaled = scaler.transform(x_raw.reshape(1, -1)).T
 
         self.training = False
-        output = self.forward(x_scaled)  # → (2, 1)
+        output = self.forward(x_scaled)
 
         predicted_class = np.argmax(output, axis=0)[0]
         confidence = output[predicted_class, 0] * 100
